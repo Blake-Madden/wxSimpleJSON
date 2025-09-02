@@ -216,11 +216,19 @@ class JSON_API_EXPORT wxSimpleJSON
      *      string failed.
      * @param conv How to encode the value while reading it.
      * @return The string value that was read, or empty string upon failure.
-     * @note Call GetType() to verify the node's data type to ensure that
-     *      you are calling the correct @c GetValue___() function.
+     * @note Call IsValueString() to verify the node's data type
+     *      is a string.
      */
-    wxString GetValueString(const wxString &defaultValue = wxEmptyString,
+    wxString AsString(const wxString &defaultValue = wxEmptyString,
                             const wxMBConv &conv = wxConvUTF8) const;
+
+    /// @deprecated Use AsString() instead.
+    [[deprecated("Use AsString() instead")]]
+    wxString GetValueString(const wxString& defaultValue = wxEmptyString,
+        const wxMBConv& conv = wxConvUTF8) const
+    {
+        return AsString(defaultValue, conv);
+    }
 
     /**
      * @brief Return the node's value as a boolean
@@ -228,68 +236,112 @@ class JSON_API_EXPORT wxSimpleJSON
      * @param defaultValue The value to return if reading it as a
      *      boolean failed.
      * @return The value as a boolean.
-     * @note Call GetType() to verify the node's data type to ensure that
-     *      you are calling the correct @c GetValue___() function.
+     * @note Call IsValueBoolean() to verify the node's data type
+     *      is a boolean.
      */
-    bool GetValueBool(bool defaultValue = false) const;
+    bool AsBool(bool defaultValue = false) const;
+
+    /// @deprecated Use AsBool() instead.
+    [[deprecated("Use AsBool() instead")]]
+    bool GetValueBool(bool defaultValue = false) const { return AsBool(defaultValue); }
 
     /**
      * @brief Returns the node's values as an array of booleans
             (if its type is JSONType::IS_TRUE/IS_FALSE and the array's values are boolean).
      * @param defaultValue The value to return upon failure.
      * @return The node's values as a vector of booleans.
-     * @note Call GetType() to verify the node's data type to ensure that
-     *      you are calling the correct @c GetValue___() function.
+     * @note Call IsValueArray() to verify the node's data type
+     *      is an array.
      */
-    std::vector<bool> GetValueArrayBool(bool defaultValue = false) const;
+    std::vector<bool> AsBools(bool defaultValue = false) const;
+
+    /// @deprecated Use AsBools() instead.
+    [[deprecated("Use AsBools() instead")]]
+    std::vector<bool> GetValueArrayBool(bool defaultValue = false) const
+        {
+        return AsBools(defaultValue);
+        }
 
     /**
      * @brief Returns the node's values as an array of strings
             (if its type is JSONType::IS_ARRAY).
      * @param conv How to encode the values while reading them.
      * @return The node's values as a string array.
-     * @note Call GetType() to verify the node's data type to ensure that
-     *      you are calling the correct @c GetValue___() function.
+     * @note Call IsValueArray() to verify the node's data type
+     *      is an array.
      */
-    wxArrayString GetValueArrayString(const wxMBConv &conv = wxConvUTF8) const;
+    wxArrayString AsArrayString(const wxMBConv &conv = wxConvUTF8) const;
+
+    /// @deprecated Use AsArrayString() instead.
+    [[deprecated("Use AsArrayString() instead")]]
+    wxArrayString GetValueArrayString(const wxMBConv& conv = wxConvUTF8) const
+        {
+        return AsStrings(conv);
+        }
 
     /**
      * @brief Returns the node's values as a vector of strings
             (if its type is JSONType::IS_ARRAY).
      * @param conv How to encode the values while reading them.
      * @return The node's values as a string vector.
-     * @note Call GetType() to verify the node's data type to ensure that
-     *      you are calling the correct @c GetValue___() function.
+     * @note Call IsValueArray() to verify the node's data type
+     *      is an array.
      */
-    std::vector<wxString> GetValueStringVector(const wxMBConv& conv = wxConvUTF8) const;
+    std::vector<wxString> AsStrings(const wxMBConv& conv = wxConvUTF8) const;
+
+    /// @deprecated Use AsStrings() instead.
+    [[deprecated("Use AsStrings() instead")]]
+    std::vector<wxString> GetValueStringVector(const wxMBConv& conv = wxConvUTF8) const
+        {
+        return AsStrings(conv);
+        }
+
     /**
      * @brief Returns the node's values as an array of nodes.
             (if its type is JSONType::IS_ARRAY).
      * @param conv How to encode the values while reading them.
      * @return The node's values as a string array.
-     * @note Call GetType() to verify the node's data type to ensure that
-     *      you are calling the correct @c GetValue___() function.
+     * @note Call IsValueArray() to verify the node's data type
+     *      is an array.
      */
-    std::vector<wxSimpleJSON::Ptr_t> GetValueArrayObject() const;
+    std::vector<wxSimpleJSON::Ptr_t> AsNodes() const;
+
+    /// @deprecated Use AsNodes() instead.
+    [[deprecated("Use AsNodes() instead")]]
+    std::vector<wxSimpleJSON::Ptr_t> GetValueArrayObject() const { return AsNodes(); }
 
     /**
      * @brief Returns the node's value as a double
      *      (if its type is JSONType::IS_NUMBER).
      * @param defaultValue The value to return upon failure.
-     * @note Call GetType() to verify the node's data type to ensure that
-     *      you are calling the correct @c GetValue___() function.
+     * @note Call IsValueNumber() to verify the node's data type
+     *      is a number.
      */
-    double GetValueNumber(double defaultValue = -1) const;
+    double AsDouble(double defaultValue = -1) const;
+
+    /// @deprecated Use AsDouble() instead.
+    [[deprecated("Use AsDouble() instead")]]
+    double GetValueNumber(double defaultValue = -1) const
+        {
+        return AsDouble(defaultValue);
+        }
 
     /**
      * @brief Returns the node's values as an array of numbers
             (if its type is JSONType::IS_ARRAY and the array's values are numeric).
      * @param defaultValue The value to return upon failure.
      * @return The node's values as a vector of numbers.
-     * @note Call GetType() to verify the node's data type to ensure that
-     *      you are calling the correct @c GetValue___() function.
+     * @note Call IsValueArray() to verify the node's data type
+     *      is an array.
      */
-    std::vector<double> GetValueArrayNumber(double defaultValue = -1) const;
+    std::vector<double> AsDoubles(double defaultValue = -1) const;
+
+    /// @deprecated Use AsDoubles() instead.
+    [[deprecated("Use AsDoubles() instead")]]
+    std::vector<double> GetValueArrayNumber(double defaultValue = -1) const
+        {
+        return AsDoubles(defaultValue);
+        }
 
     /**
      * @brief Returns a node's property (by name).
