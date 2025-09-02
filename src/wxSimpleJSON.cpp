@@ -126,7 +126,7 @@ wxSimpleJSON::Ptr_t wxSimpleJSON::Item(size_t index) const
     return Create(item);
 }
 
-wxString wxSimpleJSON::GetValueString(const wxString &defaultValue,
+wxString wxSimpleJSON::AsString(const wxString &defaultValue,
                                       const wxMBConv &conv) const
 {
     if(!m_d || (m_d->type != cJSON_String)) {
@@ -135,8 +135,8 @@ wxString wxSimpleJSON::GetValueString(const wxString &defaultValue,
     return wxString(m_d->valuestring, conv);
 }
 
-wxArrayString wxSimpleJSON::GetValueArrayString(const wxMBConv &conv) const
-{
+wxArrayString wxSimpleJSON::AsArrayString(const wxMBConv &conv) const
+    {
     if(!m_d || (m_d->type != cJSON_Array)) {
         return wxArrayString();
     }
@@ -144,13 +144,13 @@ wxArrayString wxSimpleJSON::GetValueArrayString(const wxMBConv &conv) const
     wxArrayString arr;
     wxSimpleJSON::Ptr_t parr = Create(m_d);
     for(size_t i = 0; i < parr->ArraySize(); ++i) {
-        arr.Add(parr->Item(i)->GetValueString(wxEmptyString, conv));
+        arr.Add(parr->Item(i)->AsString(wxEmptyString, conv));
     }
     return arr;
 }
 
-std::vector<wxString> wxSimpleJSON::GetValueStringVector(const wxMBConv& conv) const
-{
+std::vector<wxString> wxSimpleJSON::AsStrings(const wxMBConv& conv) const
+    {
     if (!m_d || (m_d->type != cJSON_Array)) {
         return std::vector<wxString>();
     }
@@ -158,13 +158,13 @@ std::vector<wxString> wxSimpleJSON::GetValueStringVector(const wxMBConv& conv) c
     std::vector<wxString> arr;
     wxSimpleJSON::Ptr_t parr = Create(m_d);
     for (size_t i = 0; i < parr->ArraySize(); ++i) {
-        arr.emplace_back(parr->Item(i)->GetValueString(wxEmptyString, conv));
+        arr.emplace_back(parr->Item(i)->AsString(wxEmptyString, conv));
     }
     return arr;
 }
 
-std::vector<wxSimpleJSON::Ptr_t> wxSimpleJSON::GetValueArrayObject() const
-{
+std::vector<wxSimpleJSON::Ptr_t> wxSimpleJSON::AsNodes() const
+    {
     if(!m_d || (m_d->type != cJSON_Array)) {
         return std::vector<wxSimpleJSON::Ptr_t>();
     }
@@ -177,16 +177,16 @@ std::vector<wxSimpleJSON::Ptr_t> wxSimpleJSON::GetValueArrayObject() const
     return arr;
 }
 
-double wxSimpleJSON::GetValueNumber(double defaultValue) const
-{
+double wxSimpleJSON::AsDouble(double defaultValue) const
+    {
     if(!m_d || (m_d->type != cJSON_Number)) {
         return defaultValue;
     }
     return m_d->valuedouble;
 }
 
-std::vector<double> wxSimpleJSON::GetValueArrayNumber(double defaultValue) const
-{
+std::vector<double> wxSimpleJSON::AsDoubles(double defaultValue) const
+    {
     if (!m_d || (m_d->type != cJSON_Array)) {
         return std::vector<double>();
     }
@@ -194,7 +194,7 @@ std::vector<double> wxSimpleJSON::GetValueArrayNumber(double defaultValue) const
     std::vector<double> arr;
     wxSimpleJSON::Ptr_t parr = Create(m_d);
     for (size_t i = 0; i < parr->ArraySize(); ++i) {
-        arr.emplace_back(parr->Item(i)->GetValueNumber(defaultValue));
+        arr.emplace_back(parr->Item(i)->AsDouble(defaultValue));
     }
     return arr;
 }
@@ -233,7 +233,7 @@ wxSimpleJSON &wxSimpleJSON::Add(const wxString &name, bool value)
     return *this;
 }
 
-bool wxSimpleJSON::GetValueBool(bool defaultValue) const
+bool wxSimpleJSON::AsBool(bool defaultValue) const
 {
     if(!m_d || (m_d->type != cJSON_True && m_d->type != cJSON_False)) {
         return defaultValue;
@@ -242,8 +242,8 @@ bool wxSimpleJSON::GetValueBool(bool defaultValue) const
     return m_d->type == cJSON_True;
 }
 
-std::vector<bool> wxSimpleJSON::GetValueArrayBool(bool defaultValue) const
-{
+std::vector<bool> wxSimpleJSON::AsBools(bool defaultValue) const
+    {
     if (!m_d || (m_d->type != cJSON_Array)) {
         return std::vector<bool>();
     }
@@ -251,7 +251,7 @@ std::vector<bool> wxSimpleJSON::GetValueArrayBool(bool defaultValue) const
     std::vector<bool> arr;
     wxSimpleJSON::Ptr_t parr = Create(m_d);
     for (size_t i = 0; i < parr->ArraySize(); ++i) {
-        arr.push_back(parr->Item(i)->GetValueBool(defaultValue));
+        arr.push_back(parr->Item(i)->AsBool(defaultValue));
     }
     return arr;
 }
