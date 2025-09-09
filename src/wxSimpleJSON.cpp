@@ -146,8 +146,8 @@ wxArrayString wxSimpleJSON::AsArrayString(const wxMBConv &conv) const
     for(size_t i = 0; i < parr->ArraySize(); ++i) {
         if (parr->Item(i)->IsValueString())
         {
-        arr.Add(parr->Item(i)->AsString(wxEmptyString, conv));
-    }
+            arr.Add(parr->Item(i)->AsString(wxEmptyString, conv));
+        }
     }
     return arr;
 }
@@ -163,8 +163,8 @@ std::vector<wxString> wxSimpleJSON::AsStrings(const wxMBConv& conv) const
     for (size_t i = 0; i < parr->ArraySize(); ++i) {
         if (parr->Item(i)->IsValueString())
         {
-        arr.emplace_back(parr->Item(i)->AsString(wxEmptyString, conv));
-    }
+            arr.emplace_back(parr->Item(i)->AsString(wxEmptyString, conv));
+        }
     }
     return arr;
 }
@@ -180,8 +180,8 @@ std::vector<wxSimpleJSON::Ptr_t> wxSimpleJSON::AsNodes() const
     for(size_t i = 0; i < parr->ArraySize(); ++i) {
         if (parr->Item(i)->IsValueObject())
         {
-        arr.push_back(parr->Item(i));
-    }
+            arr.push_back(parr->Item(i));
+        }
     }
     return arr;
 }
@@ -205,8 +205,8 @@ std::vector<double> wxSimpleJSON::AsDoubles(double defaultValue) const
     for (size_t i = 0; i < parr->ArraySize(); ++i) {
         if (parr->Item(i)->IsValueNumber())
         {
-        arr.emplace_back(parr->Item(i)->AsDouble(defaultValue));
-    }
+            arr.emplace_back(parr->Item(i)->AsDouble(defaultValue));
+        }
     }
     return arr;
 }
@@ -349,9 +349,11 @@ bool wxSimpleJSON::DeleteProperty(const wxString &name)
 
 bool wxSimpleJSON::DeleteProperty(int idx)
 {
-    if(!m_d || (m_d->type != cJSON_Array)) {
+    if(!m_d || (m_d->type != cJSON_Array) ||
+        idx < 0 || idx >= cJSON_GetArraySize(m_d)) {
         return false;
     }
+
     cJSON_DeleteItemFromArray(m_d, idx);
     return true;
 }
