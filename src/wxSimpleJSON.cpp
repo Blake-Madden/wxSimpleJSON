@@ -144,7 +144,10 @@ wxArrayString wxSimpleJSON::AsArrayString(const wxMBConv &conv) const
     wxArrayString arr;
     wxSimpleJSON::Ptr_t parr = Create(m_d);
     for(size_t i = 0; i < parr->ArraySize(); ++i) {
+        if (parr->Item(i)->IsValueString())
+        {
         arr.Add(parr->Item(i)->AsString(wxEmptyString, conv));
+    }
     }
     return arr;
 }
@@ -158,7 +161,10 @@ std::vector<wxString> wxSimpleJSON::AsStrings(const wxMBConv& conv) const
     std::vector<wxString> arr;
     wxSimpleJSON::Ptr_t parr = Create(m_d);
     for (size_t i = 0; i < parr->ArraySize(); ++i) {
+        if (parr->Item(i)->IsValueString())
+        {
         arr.emplace_back(parr->Item(i)->AsString(wxEmptyString, conv));
+    }
     }
     return arr;
 }
@@ -172,7 +178,10 @@ std::vector<wxSimpleJSON::Ptr_t> wxSimpleJSON::AsNodes() const
     std::vector<wxSimpleJSON::Ptr_t> arr;
     wxSimpleJSON::Ptr_t parr = Create(m_d);
     for(size_t i = 0; i < parr->ArraySize(); ++i) {
+        if (parr->Item(i)->IsValueObject())
+        {
         arr.push_back(parr->Item(i));
+    }
     }
     return arr;
 }
@@ -194,7 +203,10 @@ std::vector<double> wxSimpleJSON::AsDoubles(double defaultValue) const
     std::vector<double> arr;
     wxSimpleJSON::Ptr_t parr = Create(m_d);
     for (size_t i = 0; i < parr->ArraySize(); ++i) {
+        if (parr->Item(i)->IsValueNumber())
+        {
         arr.emplace_back(parr->Item(i)->AsDouble(defaultValue));
+    }
     }
     return arr;
 }
