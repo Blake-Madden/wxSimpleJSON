@@ -31,7 +31,7 @@ class JSON_API_EXPORT wxSimpleJSON
   public:
 
     /// @brief The data values that JSON supports.
-    enum JSONType
+    enum class JSONType
     {
         /// @brief Value is invalid.
         IS_INVALID = 0,
