@@ -282,8 +282,8 @@ wxSimpleJSON::Ptr_t wxSimpleJSON::Create(const wxString &buffer, bool isRoot, co
                 }
             }
         // get the text where the error occurred
-        wxString errorLine(startOfErrorLine, conv, endOfErrorLine-startOfErrorLine);
-        wxString errorLineStartOfError(parseEnd, conv, endOfErrorLine-parseEnd);
+        const wxString errorLine(startOfErrorLine, conv, endOfErrorLine-startOfErrorLine);
+        const wxString errorLineStartOfError(parseEnd, conv, endOfErrorLine-parseEnd);
         parsedNode->SetLastError(
             wxString::Format(_(L"JSON parsing error at line %s, column %s.\n\n"
                                 "full line:\n%s\n\n"
@@ -297,12 +297,12 @@ wxSimpleJSON::Ptr_t wxSimpleJSON::Create(const wxString &buffer, bool isRoot, co
     return parsedNode;
 }
 
-wxSimpleJSON::Ptr_t wxSimpleJSON::LoadFile(const wxFileName &filename, const wxMBConv &conv)
+wxSimpleJSON::Ptr_t wxSimpleJSON::LoadFile(const wxString &filename, const wxMBConv &conv)
 {
-    if(!filename.Exists()) {
+    if (!wxFileName{ filename }.Exists()) {
         return Create(nullptr);
     }
-    wxFFile fp(filename.GetFullPath(), "rb");
+    wxFFile fp(filename, "rb");
     wxString content;
     if(fp.IsOpened() && fp.ReadAll(&content, conv)) {
         fp.Close();
@@ -311,9 +311,9 @@ wxSimpleJSON::Ptr_t wxSimpleJSON::LoadFile(const wxFileName &filename, const wxM
     return Create(nullptr);
 }
 
-bool wxSimpleJSON::Save(const wxFileName &filename, const wxMBConv &conv)
+bool wxSimpleJSON::Save(const wxString &filename, const wxMBConv &conv) const
 {
-    wxFFile fp(filename.GetFullPath(), "wb");
+    wxFFile fp(filename, "wb");
     if(fp.IsOpened()) {
         fp.Write(Print(true, conv), conv);
         fp.Close();

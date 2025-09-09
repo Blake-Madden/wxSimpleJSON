@@ -102,7 +102,7 @@ class JSON_API_EXPORT wxSimpleJSON
      * @note Check returned the object by calling IsNull() or IsOk().
      * @return A wxSimpleJSON object.
      */
-    static wxSimpleJSON::Ptr_t LoadFile(const wxFileName &filename,
+    static wxSimpleJSON::Ptr_t LoadFile(const wxString &filename,
                                         const wxMBConv &conv = wxConvUTF8);
 
     /**
@@ -111,7 +111,7 @@ class JSON_API_EXPORT wxSimpleJSON
      * @param conv The (optional) encoding to save the file with.
      * @return @c true if the file save succeeded; @c false otherwise.
      */
-    bool Save(const wxFileName &filename, const wxMBConv &conv = wxConvUTF8);
+    bool Save(const wxString &filename, const wxMBConv &conv = wxConvUTF8) const;
 
     /**
      * @brief Is this object/node null?
