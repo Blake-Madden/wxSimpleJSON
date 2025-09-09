@@ -359,6 +359,8 @@ class JSON_API_EXPORT wxSimpleJSON
 
     /**
      * @brief Deletes a property with a given zero-based array index.
+     * @details This only applies to properties containing an array
+     *      (of either values or other nodes).
      * @param idx The index of the property to delete.
      * @return @c true if the property was successfully deleted.
      */
