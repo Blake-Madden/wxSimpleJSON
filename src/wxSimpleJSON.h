@@ -73,6 +73,16 @@ class JSON_API_EXPORT wxSimpleJSON
     void SetLastError(const wxString& error)
         { m_lastError = error; }
 
+    /**
+     * @brief Adds a property to the node with another node.
+     * @param name The name of the node to add.
+     * @param obj The other node (along with its properties and values) to add.
+     * @note If a property with the same name already exists, it will be
+     *      replaced with this one.
+     * @return A self reference to the node.
+     */
+    wxSimpleJSON& Add(const wxString& name, wxSimpleJSON::Ptr_t obj);
+
   public:
     // Custom object generators
     /**
@@ -151,15 +161,6 @@ class JSON_API_EXPORT wxSimpleJSON
     wxSimpleJSON::Ptr_t Item(size_t index) const;
 
     // Object manipulation
-    /**
-     * @brief Adds a property to the node with another node's content.
-     * @param name The name of the node to add.
-     * @param obj The other node (along with its properties and values) to add.
-     * @note If a property with the same name already exists, it will be
-     *      replaced with this one.
-     * @return A self reference to the node.
-     */
-    wxSimpleJSON &Add(const wxString &name, wxSimpleJSON::Ptr_t obj);
     /**
      * @brief Adds a property to the node with a string value.
      * @param name The name of the node to add.
