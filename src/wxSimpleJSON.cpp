@@ -96,7 +96,7 @@ wxSimpleJSON &wxSimpleJSON::AddNull(const wxString &name)
 
 wxSimpleJSON &wxSimpleJSON::ArrayAdd(const wxArrayString &arr, const wxMBConv &conv)
 {
-    wxSimpleJSON::Ptr_t parr = Create(wxSimpleJSON::IS_ARRAY);
+    wxSimpleJSON::Ptr_t parr = Create(wxSimpleJSON::JSONType::IS_ARRAY);
     for(size_t i = 0; i < arr.size(); ++i) {
         parr->ArrayAdd(arr.Item(i), conv);
     }
@@ -107,7 +107,7 @@ wxSimpleJSON &wxSimpleJSON::Add(const wxString &name, const wxArrayString &arr, 
 {
     DeleteProperty(name);
 
-    wxSimpleJSON::Ptr_t parr = Create(wxSimpleJSON::IS_ARRAY);
+    wxSimpleJSON::Ptr_t parr = Create(wxSimpleJSON::JSONType::IS_ARRAY);
     for(size_t i = 0; i < arr.size(); ++i) {
         parr->ArrayAdd(arr.Item(i), conv);
     }
