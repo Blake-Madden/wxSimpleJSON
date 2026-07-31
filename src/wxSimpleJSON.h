@@ -24,12 +24,11 @@ typedef struct cJSON cJSON;
 class JSON_API_EXPORT wxSimpleJSON
 {
   protected:
-    cJSON *m_d{ nullptr};
+    cJSON *m_d{ nullptr };
     bool m_canDelete{ false };
     wxString m_lastError;
 
   public:
-
     /// @brief The data values that JSON supports.
     enum class JSONType
     {
@@ -70,8 +69,10 @@ class JSON_API_EXPORT wxSimpleJSON
 
     /// @brief Sets the error message if parser or create fails.
     /// @param error The error message.
-    void SetLastError(const wxString& error)
-        { m_lastError = error; }
+    void SetLastError(const wxString &error)
+    {
+        m_lastError = error;
+    }
 
   public:
     // Custom object generators
@@ -117,18 +118,26 @@ class JSON_API_EXPORT wxSimpleJSON
      * @brief Is this object/node null?
      * @return @c true if the object is null.
      */
-    inline bool IsNull() const { return (m_d == nullptr); }
+    inline bool IsNull() const
+    {
+        return (m_d == nullptr);
+    }
 
     /**
      * @brief Is this object/node valid (non-null)?
      * @return @c true if the object is valid.
      */
-    inline bool IsOk() const { return (m_d != nullptr); }
+    inline bool IsOk() const
+    {
+        return (m_d != nullptr);
+    }
 
     /// @brief Returns the last error from when the node node was created/parsed.
     /// @details Will be empty if there weren't any errors.
-    const wxString& GetLastError() const
-        { return m_lastError; }
+    const wxString &GetLastError() const
+    {
+        return m_lastError;
+    }
 
     // Array manipulation
     wxSimpleJSON &ArrayAdd(wxSimpleJSON::Ptr_t obj);
@@ -208,7 +217,7 @@ class JSON_API_EXPORT wxSimpleJSON
      *      replaced with this one.
      * @return A self reference to the node.
      */
-    wxSimpleJSON& Add(const wxString& name, wxSimpleJSON::Ptr_t obj);
+    wxSimpleJSON &Add(const wxString &name, wxSimpleJSON::Ptr_t obj);
 
     /**
      * @brief Return the node's value as a string
@@ -221,12 +230,12 @@ class JSON_API_EXPORT wxSimpleJSON
      *      is a string.
      */
     wxString AsString(const wxString &defaultValue = wxEmptyString,
-                            const wxMBConv &conv = wxConvUTF8) const;
+                      const wxMBConv &conv = wxConvUTF8) const;
 
     /// @deprecated Use AsString() instead.
     [[deprecated("Use AsString() instead")]]
-    wxString GetValueString(const wxString& defaultValue = wxEmptyString,
-        const wxMBConv& conv = wxConvUTF8) const
+    wxString GetValueString(const wxString &defaultValue = wxEmptyString,
+                            const wxMBConv &conv = wxConvUTF8) const
     {
         return AsString(defaultValue, conv);
     }
@@ -244,7 +253,10 @@ class JSON_API_EXPORT wxSimpleJSON
 
     /// @deprecated Use AsBool() instead.
     [[deprecated("Use AsBool() instead")]]
-    bool GetValueBool(bool defaultValue = false) const { return AsBool(defaultValue); }
+    bool GetValueBool(bool defaultValue = false) const
+    {
+        return AsBool(defaultValue);
+    }
 
     /**
      * @brief Returns the node's values as an array of booleans
@@ -259,9 +271,9 @@ class JSON_API_EXPORT wxSimpleJSON
     /// @deprecated Use AsBools() instead.
     [[deprecated("Use AsBools() instead")]]
     std::vector<bool> GetValueArrayBool(bool defaultValue = false) const
-        {
+    {
         return AsBools(defaultValue);
-        }
+    }
 
     /**
      * @brief Returns the node's values as an array of strings
@@ -275,10 +287,10 @@ class JSON_API_EXPORT wxSimpleJSON
 
     /// @deprecated Use AsArrayString() instead.
     [[deprecated("Use AsArrayString() instead")]]
-    wxArrayString GetValueArrayString(const wxMBConv& conv = wxConvUTF8) const
-        {
+    wxArrayString GetValueArrayString(const wxMBConv &conv = wxConvUTF8) const
+    {
         return AsStrings(conv);
-        }
+    }
 
     /**
      * @brief Returns the node's values as a vector of strings
@@ -288,14 +300,14 @@ class JSON_API_EXPORT wxSimpleJSON
      * @note Call IsValueArray() to verify the node's data type
      *      is an array.
      */
-    std::vector<wxString> AsStrings(const wxMBConv& conv = wxConvUTF8) const;
+    std::vector<wxString> AsStrings(const wxMBConv &conv = wxConvUTF8) const;
 
     /// @deprecated Use AsStrings() instead.
     [[deprecated("Use AsStrings() instead")]]
-    std::vector<wxString> GetValueStringVector(const wxMBConv& conv = wxConvUTF8) const
-        {
+    std::vector<wxString> GetValueStringVector(const wxMBConv &conv = wxConvUTF8) const
+    {
         return AsStrings(conv);
-        }
+    }
 
     /**
      * @brief Returns the node's values as an array of nodes.
@@ -309,7 +321,10 @@ class JSON_API_EXPORT wxSimpleJSON
 
     /// @deprecated Use AsNodes() instead.
     [[deprecated("Use AsNodes() instead")]]
-    std::vector<wxSimpleJSON::Ptr_t> GetValueArrayObject() const { return AsNodes(); }
+    std::vector<wxSimpleJSON::Ptr_t> GetValueArrayObject() const
+    {
+        return AsNodes();
+    }
 
     /**
      * @brief Returns the node's value as a double
@@ -323,9 +338,9 @@ class JSON_API_EXPORT wxSimpleJSON
     /// @deprecated Use AsDouble() instead.
     [[deprecated("Use AsDouble() instead")]]
     double GetValueNumber(double defaultValue = -1) const
-        {
+    {
         return AsDouble(defaultValue);
-        }
+    }
 
     /**
      * @brief Returns the node's values as an array of numbers
@@ -340,9 +355,9 @@ class JSON_API_EXPORT wxSimpleJSON
     /// @deprecated Use AsDoubles() instead.
     [[deprecated("Use AsDoubles() instead")]]
     std::vector<double> GetValueArrayNumber(double defaultValue = -1) const
-        {
+    {
         return AsDoubles(defaultValue);
-        }
+    }
 
     /**
      * @brief Returns a node's property (by name).
@@ -367,53 +382,63 @@ class JSON_API_EXPORT wxSimpleJSON
      */
     bool DeleteProperty(int idx);
 
-     /**
+    /**
      * @brief Check if node contains the specific Key.
        @details Returns @c false if the property cannot be found.
        @param name The name of the property to check for.
        @return @c true if the node contains the specified property.
      */
-     bool HasProperty(const wxString& name);
+    bool HasProperty(const wxString &name);
 
     /**
      * @brief Get the value type that this node contains.
      * @returns The node's value type.
      */
-     wxSimpleJSON::JSONType GetType() const;
+    wxSimpleJSON::JSONType GetType() const;
 
-     /// @returns @c true if the node's value type is a string.
-     bool IsValueString() const
-        { return GetType() == wxSimpleJSON::JSONType::IS_STRING; }
+    /// @returns @c true if the node's value type is a string.
+    bool IsValueString() const
+    {
+        return GetType() == wxSimpleJSON::JSONType::IS_STRING;
+    }
 
-     /// @returns @c true if the node's value type is a number.
-     bool IsValueNumber() const
-        { return GetType() == wxSimpleJSON::JSONType::IS_NUMBER; }
+    /// @returns @c true if the node's value type is a number.
+    bool IsValueNumber() const
+    {
+        return GetType() == wxSimpleJSON::JSONType::IS_NUMBER;
+    }
 
-     /// @returns @c true if the node's value type is null.
-     bool IsValueNull() const
-        { return GetType() == wxSimpleJSON::JSONType::IS_NULL; }
+    /// @returns @c true if the node's value type is null.
+    bool IsValueNull() const
+    {
+        return GetType() == wxSimpleJSON::JSONType::IS_NULL;
+    }
 
-     /// @returns @c true if the node's value type is an array.
-     bool IsValueArray() const
-        { return GetType() == wxSimpleJSON::JSONType::IS_ARRAY; }
+    /// @returns @c true if the node's value type is an array.
+    bool IsValueArray() const
+    {
+        return GetType() == wxSimpleJSON::JSONType::IS_ARRAY;
+    }
 
-     /// @returns @c true if the node's value type is an object.
-     bool IsValueObject() const
-        { return GetType() == wxSimpleJSON::JSONType::IS_OBJECT; }
+    /// @returns @c true if the node's value type is an object.
+    bool IsValueObject() const
+    {
+        return GetType() == wxSimpleJSON::JSONType::IS_OBJECT;
+    }
 
-     /// @returns @c true if the node's value type is a boolean.
-     bool IsValueBoolean() const
-        {
+    /// @returns @c true if the node's value type is a boolean.
+    bool IsValueBoolean() const
+    {
         return (GetType() == wxSimpleJSON::JSONType::IS_TRUE ||
                 GetType() == wxSimpleJSON::JSONType::IS_FALSE);
-        }
+    }
 
     /**
      * @brief Gets Object Keys.
      * @param conv The (optional) encoding to read the keys with.
      * @return An array of strings containing object Keys.
      */
-     wxArrayString GetObjectKeys(const wxMBConv &conv = wxConvUTF8);
+    wxArrayString GetObjectKeys(const wxMBConv &conv = wxConvUTF8);
 
     /**
      * @brief Converts this JSON object to string.

@@ -11,8 +11,7 @@ static cJSON *cJSONAllocNew()
 wxSimpleJSON::wxSimpleJSON()
     : m_d(NULL)
     , m_canDelete(false)
-{
-}
+{}
 
 wxSimpleJSON::~wxSimpleJSON() {}
 
@@ -103,7 +102,8 @@ wxSimpleJSON &wxSimpleJSON::ArrayAdd(const wxArrayString &arr, const wxMBConv &c
     return ArrayAdd(parr);
 }
 
-wxSimpleJSON &wxSimpleJSON::Add(const wxString &name, const wxArrayString &arr, const wxMBConv &conv)
+wxSimpleJSON &wxSimpleJSON::Add(const wxString &name, const wxArrayString &arr,
+                                const wxMBConv &conv)
 {
     DeleteProperty(name);
 
@@ -114,11 +114,14 @@ wxSimpleJSON &wxSimpleJSON::Add(const wxString &name, const wxArrayString &arr, 
     return Add(name, parr);
 }
 
-size_t wxSimpleJSON::ArraySize() const { return cJSON_GetArraySize(m_d); }
+size_t wxSimpleJSON::ArraySize() const
+{
+    return cJSON_GetArraySize(m_d);
+}
 
 wxSimpleJSON::Ptr_t wxSimpleJSON::Item(size_t index) const
 {
-    cJSON* item{ nullptr };
+    cJSON *item{ nullptr };
     if(!m_d || (m_d->type != cJSON_Array)) {
         return Create(item);
     }
@@ -126,8 +129,7 @@ wxSimpleJSON::Ptr_t wxSimpleJSON::Item(size_t index) const
     return Create(item);
 }
 
-wxString wxSimpleJSON::AsString(const wxString &defaultValue,
-                                      const wxMBConv &conv) const
+wxString wxSimpleJSON::AsString(const wxString &defaultValue, const wxMBConv &conv) const
 {
     if(!m_d || (m_d->type != cJSON_String)) {
         return defaultValue;
@@ -136,7 +138,7 @@ wxString wxSimpleJSON::AsString(const wxString &defaultValue,
 }
 
 wxArrayString wxSimpleJSON::AsArrayString(const wxMBConv &conv) const
-    {
+{
     if(!m_d || (m_d->type != cJSON_Array)) {
         return wxArrayString();
     }
@@ -144,25 +146,23 @@ wxArrayString wxSimpleJSON::AsArrayString(const wxMBConv &conv) const
     wxArrayString arr;
     wxSimpleJSON::Ptr_t parr = Create(m_d);
     for(size_t i = 0; i < parr->ArraySize(); ++i) {
-        if (parr->Item(i)->IsValueString())
-        {
+        if(parr->Item(i)->IsValueString()) {
             arr.Add(parr->Item(i)->AsString(wxEmptyString, conv));
         }
     }
     return arr;
 }
 
-std::vector<wxString> wxSimpleJSON::AsStrings(const wxMBConv& conv) const
-    {
-    if (!m_d || (m_d->type != cJSON_Array)) {
+std::vector<wxString> wxSimpleJSON::AsStrings(const wxMBConv &conv) const
+{
+    if(!m_d || (m_d->type != cJSON_Array)) {
         return std::vector<wxString>();
     }
 
     std::vector<wxString> arr;
     wxSimpleJSON::Ptr_t parr = Create(m_d);
-    for (size_t i = 0; i < parr->ArraySize(); ++i) {
-        if (parr->Item(i)->IsValueString())
-        {
+    for(size_t i = 0; i < parr->ArraySize(); ++i) {
+        if(parr->Item(i)->IsValueString()) {
             arr.emplace_back(parr->Item(i)->AsString(wxEmptyString, conv));
         }
     }
@@ -170,7 +170,7 @@ std::vector<wxString> wxSimpleJSON::AsStrings(const wxMBConv& conv) const
 }
 
 std::vector<wxSimpleJSON::Ptr_t> wxSimpleJSON::AsNodes() const
-    {
+{
     if(!m_d || (m_d->type != cJSON_Array)) {
         return std::vector<wxSimpleJSON::Ptr_t>();
     }
@@ -184,7 +184,7 @@ std::vector<wxSimpleJSON::Ptr_t> wxSimpleJSON::AsNodes() const
 }
 
 double wxSimpleJSON::AsDouble(double defaultValue) const
-    {
+{
     if(!m_d || (m_d->type != cJSON_Number)) {
         return defaultValue;
     }
@@ -192,16 +192,15 @@ double wxSimpleJSON::AsDouble(double defaultValue) const
 }
 
 std::vector<double> wxSimpleJSON::AsDoubles(double defaultValue) const
-    {
-    if (!m_d || (m_d->type != cJSON_Array)) {
+{
+    if(!m_d || (m_d->type != cJSON_Array)) {
         return std::vector<double>();
     }
 
     std::vector<double> arr;
     wxSimpleJSON::Ptr_t parr = Create(m_d);
-    for (size_t i = 0; i < parr->ArraySize(); ++i) {
-        if (parr->Item(i)->IsValueNumber())
-        {
+    for(size_t i = 0; i < parr->ArraySize(); ++i) {
+        if(parr->Item(i)->IsValueNumber()) {
             arr.emplace_back(parr->Item(i)->AsDouble(defaultValue));
         }
     }
@@ -223,9 +222,7 @@ wxSimpleJSON &wxSimpleJSON::ArrayAdd(bool value)
     }
     if(value) {
         cJSON_AddItemToArray(m_d, cJSON_CreateTrue());
-    }
-    else
-    {
+    } else {
         cJSON_AddItemToArray(m_d, cJSON_CreateFalse());
     }
     return *this;
@@ -252,14 +249,14 @@ bool wxSimpleJSON::AsBool(bool defaultValue) const
 }
 
 std::vector<bool> wxSimpleJSON::AsBools(bool defaultValue) const
-    {
-    if (!m_d || (m_d->type != cJSON_Array)) {
+{
+    if(!m_d || (m_d->type != cJSON_Array)) {
         return std::vector<bool>();
     }
 
     std::vector<bool> arr;
     wxSimpleJSON::Ptr_t parr = Create(m_d);
-    for (size_t i = 0; i < parr->ArraySize(); ++i) {
+    for(size_t i = 0; i < parr->ArraySize(); ++i) {
         arr.push_back(parr->Item(i)->AsBool(defaultValue));
     }
     return arr;
@@ -271,44 +268,45 @@ wxSimpleJSON::Ptr_t wxSimpleJSON::Create(const wxString &buffer, bool isRoot, co
     const auto scopedBuffer = buffer.mb_str(conv);
     cJSON *p = cJSON_ParseWithOpts(scopedBuffer.data(), &parseEnd, true);
     auto parsedNode = Create(p, isRoot);
-    if (p == nullptr) {
+    if(p == nullptr) {
         const auto lineCount = std::count(scopedBuffer.data(), parseEnd, '\n');
         // get the full line where the error occurred
         auto startOfErrorLine = parseEnd;
-        while (startOfErrorLine > scopedBuffer.data() && *startOfErrorLine != '\n') {
+        while(startOfErrorLine > scopedBuffer.data() && *startOfErrorLine != '\n') {
             --startOfErrorLine;
-            if (*startOfErrorLine == '\n') {
+            if(*startOfErrorLine == '\n') {
                 ++startOfErrorLine;
                 break;
-                }
             }
+        }
         auto endOfErrorLine = parseEnd;
-        while (*endOfErrorLine != 0 && *endOfErrorLine != '\n') {
+        while(*endOfErrorLine != 0 && *endOfErrorLine != '\n') {
             ++endOfErrorLine;
-            if (*endOfErrorLine == '\n') {
+            if(*endOfErrorLine == '\n') {
                 --endOfErrorLine;
                 break;
-                }
             }
+        }
         // get the text where the error occurred
-        const wxString errorLine(startOfErrorLine, conv, endOfErrorLine-startOfErrorLine);
-        const wxString errorLineStartOfError(parseEnd, conv, endOfErrorLine-parseEnd);
-        parsedNode->SetLastError(
-            wxString::Format(_(L"JSON parsing error at line %s, column %s.\n\n"
-                                "full line:\n%s\n\n"
-                                "start of error:\n%s"),
-                wxNumberFormatter::ToString(lineCount + 1 /* human readable 1 indexed*/, 0,
-                                            wxNumberFormatter::Style::Style_WithThousandsSep),
-                wxNumberFormatter::ToString((parseEnd-startOfErrorLine) + 1 /* human readable 1 indexed*/, 0,
-                                            wxNumberFormatter::Style::Style_WithThousandsSep),
-                errorLine, errorLineStartOfError));
+        const wxString errorLine(startOfErrorLine, conv, endOfErrorLine - startOfErrorLine);
+        const wxString errorLineStartOfError(parseEnd, conv, endOfErrorLine - parseEnd);
+        parsedNode->SetLastError(wxString::Format(
+            _(L"JSON parsing error at line %s, column %s.\n\n"
+              "full line:\n%s\n\n"
+              "start of error:\n%s"),
+            wxNumberFormatter::ToString(lineCount + 1 /* human readable 1 indexed*/, 0,
+                                        wxNumberFormatter::Style::Style_WithThousandsSep),
+            wxNumberFormatter::ToString((parseEnd - startOfErrorLine) +
+                                            1 /* human readable 1 indexed*/,
+                                        0, wxNumberFormatter::Style::Style_WithThousandsSep),
+            errorLine, errorLineStartOfError));
     }
     return parsedNode;
 }
 
 wxSimpleJSON::Ptr_t wxSimpleJSON::LoadFile(const wxString &filename, const wxMBConv &conv)
 {
-    if (!wxFileName{ filename }.Exists()) {
+    if(!wxFileName{ filename }.Exists()) {
         return Create(nullptr);
     }
     wxFFile fp(filename, "rb");
@@ -346,8 +344,7 @@ bool wxSimpleJSON::DeleteProperty(const wxString &name)
 
 bool wxSimpleJSON::DeleteProperty(int idx)
 {
-    if(!m_d || (m_d->type != cJSON_Array) ||
-        idx < 0 || idx >= cJSON_GetArraySize(m_d)) {
+    if(!m_d || (m_d->type != cJSON_Array) || idx < 0 || idx >= cJSON_GetArraySize(m_d)) {
         return false;
     }
 
@@ -355,7 +352,7 @@ bool wxSimpleJSON::DeleteProperty(int idx)
     return true;
 }
 
-bool wxSimpleJSON::HasProperty(const wxString& name)
+bool wxSimpleJSON::HasProperty(const wxString &name)
 {
     if(!m_d || (m_d->type != cJSON_Object)) {
         return false;
@@ -381,8 +378,7 @@ wxArrayString wxSimpleJSON::GetObjectKeys(const wxMBConv &conv)
     cJSON_ArrayForEach(current_element, m_d)
     {
         current_key = current_element->string;
-        if (current_key != nullptr)
-        {
+        if(current_key != nullptr) {
             keys.Add(wxString(current_key, conv));
         }
     }
