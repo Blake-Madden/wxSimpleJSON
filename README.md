@@ -94,7 +94,7 @@ The Library seems to have pretty much all covered. But if you find any missing f
 
 ### We neeed Help
 Do you have a little bit time? Help us with the following
-- Writing unit tests for the library. We prefer [Catch](https://github.com/catchorg/Catch2)
+- Writing unit tests for the library. We prefer [GoogleTest](https://github.com/google/googletest)
 - Help us write CMake to make the sources build as Shared/Static library across all platform
 
 Hope you enjoy it
