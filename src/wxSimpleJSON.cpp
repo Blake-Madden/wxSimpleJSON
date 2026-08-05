@@ -49,7 +49,7 @@ wxSimpleJSON &wxSimpleJSON::ArrayAdd(wxSimpleJSON::Ptr_t obj)
         return *this;
     }
     if(cJSON_AddItemToArray(m_d, obj->m_d)) {
-    obj->m_canDelete = false;
+        obj->m_canDelete = false;
     }
     return *this;
 }
@@ -80,7 +80,7 @@ wxSimpleJSON &wxSimpleJSON::Add(const wxString &name, wxSimpleJSON::Ptr_t obj)
         return *this;
     }
     if(cJSON_AddItemToObject(m_d, name.utf8_str().data(), obj->m_d)) {
-    obj->m_canDelete = false;
+        obj->m_canDelete = false;
     }
     return *this;
 }
@@ -120,7 +120,7 @@ wxSimpleJSON &wxSimpleJSON::AddNull(const wxString &name)
 
 wxSimpleJSON &wxSimpleJSON::ArrayAdd(const wxArrayString &arr, const wxMBConv &conv)
 {
-    wxSimpleJSON::Ptr_t parr = Create(wxSimpleJSON::JSONType::IS_ARRAY);
+    wxSimpleJSON::Ptr_t parr = Create(wxSimpleJSON::JSONType::IS_ARRAY, true);
     for(size_t i = 0; i < arr.size(); ++i) {
         parr->ArrayAdd(arr.Item(i), conv);
     }
@@ -132,7 +132,7 @@ wxSimpleJSON &wxSimpleJSON::Add(const wxString &name, const wxArrayString &arr,
 {
     DeleteProperty(name);
 
-    wxSimpleJSON::Ptr_t parr = Create(wxSimpleJSON::JSONType::IS_ARRAY);
+    wxSimpleJSON::Ptr_t parr = Create(wxSimpleJSON::JSONType::IS_ARRAY, true);
     for(size_t i = 0; i < arr.size(); ++i) {
         parr->ArrayAdd(arr.Item(i), conv);
     }
