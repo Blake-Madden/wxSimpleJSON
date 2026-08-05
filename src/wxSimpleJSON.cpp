@@ -46,6 +46,7 @@ void wxSimpleJSON::Destroy(wxSimpleJSON *obj)
 wxSimpleJSON &wxSimpleJSON::ArrayAdd(wxSimpleJSON::Ptr_t obj)
 {
     cJSON_AddItemToArray(m_d, obj->m_d);
+    obj->m_canDelete = false;
     return *this;
 }
 
@@ -66,6 +67,7 @@ wxSimpleJSON &wxSimpleJSON::Add(const wxString &name, wxSimpleJSON::Ptr_t obj)
     DeleteProperty(name);
 
     cJSON_AddItemToObject(m_d, name.utf8_str().data(), obj->m_d);
+    obj->m_canDelete = false;
     return *this;
 }
 

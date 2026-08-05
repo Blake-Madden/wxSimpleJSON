@@ -491,3 +491,30 @@ TEST(AddDelete, Add)
 	EXPECT_FALSE(location->IsNull());
 	EXPECT_TRUE(location->AsString() == wxString{ L"Ohio" });
 }
+
+//-----------------------------------------------------
+TEST(AddDelete, AttachingRootNodeTransfersOwnership)
+{
+	auto parent = wxSimpleJSON::Create(wxSimpleJSON::JSONType::IS_OBJECT, true);
+	{
+		auto child = wxSimpleJSON::Create(wxSimpleJSON::JSONType::IS_OBJECT, true);
+		child->Add(L"value", 42.0);
+		parent->Add(L"child", child);
+	}
+
+	EXPECT_TRUE(parent->GetProperty(L"child")->GetProperty(L"value")->AsDouble() == 42.0);
+}
+
+//-----------------------------------------------------
+TEST(AddDelete, ArrayAttachingRootNodeTransfersOwnership)
+{
+	auto parent = wxSimpleJSON::Create(wxSimpleJSON::JSONType::IS_ARRAY, true);
+	{
+		auto child = wxSimpleJSON::Create(wxSimpleJSON::JSONType::IS_OBJECT, true);
+		child->Add(L"value", 42.0);
+		parent->ArrayAdd(child);
+	}
+
+	ASSERT_TRUE(parent->ArraySize() == 1);
+	EXPECT_TRUE(parent->Item(0)->GetProperty(L"value")->AsDouble() == 42.0);
+}
