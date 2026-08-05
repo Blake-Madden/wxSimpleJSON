@@ -11,10 +11,11 @@ set(SIMPLEJSON_LIBRARIES simplejson CACHE INTERNAL "")
 set(SIMPLEJSON_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src CACHE INTERNAL "")
 
 #Generate the shared library from the library sources
-add_library(simplejson SHARED 
+add_library(simplejson SHARED
     ${PROJECT_SOURCE_DIR}/src/cJSON/cJSON.c
     ${PROJECT_SOURCE_DIR}/src/wxSimpleJSON.cpp
 )
+target_compile_definitions(simplejson PRIVATE JSON_CREATING_DLL)
 
 #Find and include wxWidgets
 find_package(wxWidgets REQUIRED net core base)
