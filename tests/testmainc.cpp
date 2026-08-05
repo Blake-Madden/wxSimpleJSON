@@ -7,7 +7,7 @@ TEST(Types, String)
 	const auto json = wxSimpleJSON::Create(LR"(
 {
 "user-name": "Blake M."
-})");
+})", true);
 	ASSERT_TRUE(json->IsOk());
 	auto userName = json->GetProperty(L"user-name");
 	ASSERT_TRUE(userName->IsOk());
@@ -28,7 +28,7 @@ TEST(Types, Integer)
 {
 "user-name": "Blake M.",
 "user-id": 84517
-})");
+})", true);
 	ASSERT_TRUE(json->IsOk());
 	auto userId = json->GetProperty(L"user-id");
 	ASSERT_TRUE(userId->IsOk());
@@ -50,7 +50,7 @@ TEST(Types, Double)
 "user-name": "Blake M.",
 "user-id": 84517,
 "salary": 2200000.97
-})");
+})", true);
 	ASSERT_TRUE(json->IsOk());
 	auto salary = json->GetProperty(L"salary");
 	ASSERT_TRUE(salary->IsOk());
@@ -73,7 +73,7 @@ TEST(Types, Boolean)
 "user-id": 84517,
 "salary": 2200000.97,
 "active" : true
-})");
+})", true);
 	ASSERT_TRUE(json->IsOk());
 	auto active = json->GetProperty(L"active");
 	ASSERT_TRUE(active->IsOk());
@@ -96,7 +96,7 @@ TEST(Types, MissingProperty)
 "user-id": 84517,
 "salary": 2200000.97,
 "active" : true
-})");
+})", true);
 	ASSERT_TRUE(json->IsOk());
 	// there is no "location" property
 	auto location = json->GetProperty(L"location");
@@ -126,7 +126,7 @@ TEST(Types, EmptyArray)
 	const auto json = wxSimpleJSON::Create(LR"(
 {
 "datasets": []
-})");
+})", true);
 	ASSERT_TRUE(json->IsOk());
 	auto datasets = json->GetProperty(L"datasets");
 	ASSERT_TRUE(datasets->IsOk());
@@ -146,7 +146,7 @@ TEST(Types, StringArray)
 	const auto json = wxSimpleJSON::Create(LR"(
 {
 "datasets": [ "Head Count", "Enrollment" ]
-})");
+})", true);
 	ASSERT_TRUE(json->IsOk());
 	auto datasets = json->GetProperty(L"datasets");
 	ASSERT_TRUE(datasets->IsOk());
@@ -168,7 +168,7 @@ TEST(Types, BooleanArray)
 	const auto json = wxSimpleJSON::Create(LR"(
 {
 "active": [ false, true, false ]
-})");
+})", true);
 	ASSERT_TRUE(json->IsOk());
 	auto actives = json->GetProperty(L"active");
 	ASSERT_TRUE(actives->IsOk());
@@ -191,7 +191,7 @@ TEST(Types, DoubleArray)
 	const auto json = wxSimpleJSON::Create(LR"(
 {
 "modes": [ 3.759, 189.842957, 0, 8 ]
-})");
+})", true);
 	ASSERT_TRUE(json->IsOk());
 	auto modes = json->GetProperty(L"modes");
 	ASSERT_TRUE(modes->IsOk());
@@ -228,7 +228,7 @@ TEST(Types, NodeArray)
       "year": 1987
     }
 ]
-})");
+})", true);
 	ASSERT_TRUE(json->IsOk());
 	auto datasets = json->GetProperty(L"datasets");
 	ASSERT_TRUE(datasets->IsOk());
@@ -287,7 +287,7 @@ TEST(Types, NodeArrayDifferentTypes)
 	const auto json = wxSimpleJSON::Create(LR"(
 {
 "years": [ 1972, "1973", 1974 ]
-})");
+})", true);
 	ASSERT_TRUE(json->IsOk());
 	auto years = json->GetProperty(L"years");
 	ASSERT_TRUE(years->IsOk());
@@ -342,7 +342,7 @@ TEST(File, LoadAndSave)
       "year": 1987
     }
 ]
-})");
+})", true);
 	ASSERT_TRUE(json->IsOk());
 	ASSERT_TRUE(json->Save(wxFileName::GetTempDir() + L"/json.tmp"));
 
@@ -417,7 +417,7 @@ TEST(Fuzzing, Garbage)
 	const auto json = wxSimpleJSON::Create(LR"(
 {
 "datasets": [ "Head Count", Enrollment" ]
-})");
+})", true);
 	ASSERT_FALSE(json->IsOk());
 	EXPECT_FALSE(json->GetLastError().empty());
 }
@@ -431,7 +431,7 @@ TEST(AddDelete, Delete)
 "user-id": 84517,
 "salary": 2200000.97,
 "status" : [ "active", "remote" ]
-})");
+})", true);
 	ASSERT_TRUE(json->IsOk());
 	// out of range or non-existent
 	EXPECT_FALSE(json->DeleteProperty(-1));
@@ -456,7 +456,7 @@ TEST(AddDelete, Add)
 "user-id": 84517,
 "salary": 2200000.97,
 "status" : [ "active", "remote" ]
-})");
+})", true);
 
 	ASSERT_TRUE(json->IsOk());
 	json->Add(L"user-name", wxString{ L"Stefano" });
