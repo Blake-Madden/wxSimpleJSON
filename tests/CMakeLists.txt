@@ -15,6 +15,17 @@ project(simplejsontest)
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 
+option(ENABLE_ASAN "Build with AddressSanitizer" ON)
+if(ENABLE_ASAN)
+  if(MSVC)
+    add_compile_options(/fsanitize=address /Zi)
+    add_link_options(/INCREMENTAL:NO /DEBUG)
+  else()
+    add_compile_options(-fsanitize=address -fno-omit-frame-pointer -g)
+    add_link_options(-fsanitize=address)
+  endif()
+endif()
+
 include(FindGit.cmake)
 if(NOT Git_FOUND)
   message(FATAL_ERROR "Git not found. Unable to fetch needed libraries.")
