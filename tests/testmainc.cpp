@@ -518,3 +518,71 @@ TEST(AddDelete, ArrayAttachingRootNodeTransfersOwnership)
 	ASSERT_TRUE(parent->ArraySize() == 1);
 	EXPECT_TRUE(parent->Item(0)->GetProperty(L"value")->AsDouble() == 42.0);
 }
+
+//-----------------------------------------------------
+TEST(AddDelete, AddFailsOnNonObjectType)
+{
+	// Add() attaches a *named* property, which only makes sense on an object node
+	auto arr = wxSimpleJSON::Create(wxSimpleJSON::JSONType::IS_ARRAY, true);
+
+	arr->Add(L"key", wxString{ L"value" });
+	EXPECT_TRUE(arr->ArraySize() == 0);
+
+	arr->Add(L"key", 42.0);
+	EXPECT_TRUE(arr->ArraySize() == 0);
+
+	arr->Add(L"key", true);
+	EXPECT_TRUE(arr->ArraySize() == 0);
+
+	arr->Add(L"key", wxArrayString{ L"a", L"b" });
+	EXPECT_TRUE(arr->ArraySize() == 0);
+
+	arr->AddNull(L"key");
+	EXPECT_TRUE(arr->ArraySize() == 0);
+
+	EXPECT_FALSE(arr->GetProperty(L"key")->IsOk());
+}
+
+//-----------------------------------------------------
+TEST(AddDelete, ArrayAddFailsOnNonArrayType)
+{
+	auto obj = wxSimpleJSON::Create(wxSimpleJSON::JSONType::IS_OBJECT, true);
+
+	obj->ArrayAdd(wxString{ L"value" });
+	EXPECT_TRUE(obj->ArraySize() == 0);
+
+	obj->ArrayAdd(42.0);
+	EXPECT_TRUE(obj->ArraySize() == 0);
+
+	obj->ArrayAdd(true);
+	EXPECT_TRUE(obj->ArraySize() == 0);
+
+	obj->ArrayAdd(wxArrayString{ L"a", L"b" });
+	EXPECT_TRUE(obj->ArraySize() == 0);
+}
+
+//-----------------------------------------------------
+TEST(AddDelete, AttachingFailsOnNonObjectType)
+{
+	auto arr = wxSimpleJSON::Create(wxSimpleJSON::JSONType::IS_ARRAY, true);
+	auto child = wxSimpleJSON::Create(wxSimpleJSON::JSONType::IS_OBJECT, true);
+	child->Add(L"value", 42.0);
+
+	arr->Add(L"child", child);
+	EXPECT_TRUE(arr->ArraySize() == 0);
+
+	EXPECT_TRUE(child->GetProperty(L"value")->AsDouble() == 42.0);
+}
+
+//-----------------------------------------------------
+TEST(AddDelete, ArrayAttachingFailsOnNonArrayType)
+{
+	auto obj = wxSimpleJSON::Create(wxSimpleJSON::JSONType::IS_OBJECT, true);
+	auto child = wxSimpleJSON::Create(wxSimpleJSON::JSONType::IS_OBJECT, true);
+	child->Add(L"value", 42.0);
+
+	obj->ArrayAdd(child);
+	EXPECT_TRUE(obj->ArraySize() == 0);
+
+	EXPECT_TRUE(child->GetProperty(L"value")->AsDouble() == 42.0);
+}
